@@ -76,6 +76,10 @@
     .card-overall { font-size: 22px; font-family: 'DM Mono', monospace; color: var(--accent); font-weight: 500; margin-left: auto; }
     .delete-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 15px; padding: 2px 4px; transition: color 0.15s; line-height: 1; }
     .delete-btn:hover { color: #e07070; }
+    .edit-btn { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 15px; padding: 2px 4px; transition: color 0.15s; line-height: 1; }
+    .edit-btn:hover { color: var(--accent); }
+    .edit-banner { background: #1a1a0a; border: 1px solid #555510; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 12px; font-family: 'DM Mono', monospace; color: #d0d060; display: none; align-items: center; justify-content: space-between; }
+    .cancel-edit-btn { background: none; border: 1px solid #555510; border-radius: 6px; padding: 4px 10px; font-size: 11px; color: #d0d060; cursor: pointer; font-family: 'DM Mono', monospace; }
     .stats-filter { display: flex; gap: 6px; margin-bottom: 20px; }
     .stats-pill { padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; background: var(--surface); transition: all 0.15s; }
     .stats-pill.active { background: var(--accent); color: #0e0e0e; border-color: var(--accent); }
@@ -162,6 +166,10 @@
     </div>
     <hr class="divider">
     <div class="field"><label>Comentários</label><textarea id="notes" placeholder="Anota suas impressões..."></textarea></div>
+    <div class="edit-banner" id="edit-banner">
+      <span>✏️ Editando entrada</span>
+      <button class="cancel-edit-btn" onclick="cancelEdit()">Cancelar edição</button>
+    </div>
     <button class="save-btn" id="save-btn" onclick="saveEntry()">Salvar Strain</button>
   </div>
 
@@ -198,7 +206,7 @@ const negEffects = ['Ansiedade','Boca seca','Olhos vermelhos','Paranoia','Tontur
 const ratingKeys = ['aparencia','cheiro','gosto','queima','stoned'];
 const ratingLabels = { aparencia:'Aparência', cheiro:'Cheiro', gosto:'Gosto', queima:'Queima', stoned:'Stoned' };
 
-let selectedType = '', deleteId = null, statsPeriod = 'week', allEntries = [];
+let selectedType = '', deleteId = null, editId = null, statsPeriod = 'week', allEntries = [];
 let selectedFlavors = new Set(), selectedPos = new Set(), selectedNeg = new Set();
 let ratings = { aparencia:0, cheiro:0, gosto:0, queima:0, stoned:0 };
 
@@ -304,6 +312,7 @@ function renderCards(entries, el) {
         </div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="card-date">${new Date(e.created_at).toLocaleDateString('pt-BR')}</span>
+          <button class="edit-btn" onclick="openEdit(${e.id})" title="Editar">✎</button>
           <button class="delete-btn" onclick="openModal(${e.id},'${safeName}')">✕</button>
         </div>
       </div>
@@ -330,6 +339,46 @@ async function confirmDelete() {
     closeModal(); showToast('Entrada apagada.'); loadEntries();
   } catch(err) { showToast('Erro ao apagar.'); }
 }
+function openEdit(id) {
+  const e = allEntries.find(x => x.id === id);
+  if (!e) return;
+  editId = id;
+  resetForm();
+  document.getElementById('strain').value = e.strain || '';
+  document.getElementById('shop').value = e.shop || '';
+  document.getElementById('qty').value = e.qty != null ? e.qty : '';
+  document.getElementById('price').value = e.price != null ? e.price : '';
+  calcPrice();
+  if (e.type) {
+    const btn = [...document.querySelectorAll('.type-btn')].find(b => b.textContent.trim() === e.type);
+    if (btn) { btn.classList.add('active'); selectedType = e.type; }
+  }
+  (e.flavors||[]).forEach(f => {
+    selectedFlavors.add(f);
+    [...document.querySelectorAll('#flavors .tag')].find(t => t.textContent === f)?.classList.add('selected');
+  });
+  (e.pos||[]).forEach(f => {
+    selectedPos.add(f);
+    [...document.querySelectorAll('#pos-effects .tag')].find(t => t.textContent === f)?.classList.add('selected');
+  });
+  (e.neg||[]).forEach(f => {
+    selectedNeg.add(f);
+    [...document.querySelectorAll('#neg-effects .tag')].find(t => t.textContent === f)?.classList.add('selected');
+  });
+  const r = e.ratings || {};
+  ratingKeys.forEach(k => { ratings[k] = r[k] || 0; updateStars(k); });
+  updateOverall();
+  document.getElementById('notes').value = e.notes || '';
+  document.getElementById('edit-banner').style.display = 'flex';
+  document.getElementById('save-btn').textContent = 'Salvar edição';
+  switchTab('add');
+}
+function cancelEdit() {
+  editId = null;
+  resetForm();
+  document.getElementById('edit-banner').style.display = 'none';
+  document.getElementById('save-btn').textContent = 'Salvar Strain';
+}
 async function saveEntry() {
   const strain = document.getElementById('strain').value.trim();
   if (!strain) { showToast('Coloca o nome da strain!'); return; }
@@ -338,15 +387,24 @@ async function saveEntry() {
   const qty = parseFloat(document.getElementById('qty').value) || null;
   const price = parseFloat(document.getElementById('price').value) || null;
   const price_per_g = (qty && price) ? parseFloat((price/qty).toFixed(2)) : null;
+  const body = {
+    strain, shop: document.getElementById('shop').value.trim()||null,
+    qty, price, price_per_g, type: selectedType||null,
+    flavors:[...selectedFlavors], pos:[...selectedPos], neg:[...selectedNeg],
+    ratings: Object.fromEntries(ratingKeys.map(k=>[k, ratings[k]||null])),
+    notes: document.getElementById('notes').value.trim()||null,
+  };
   try {
-    await apiRequest('POST', '', {
-      strain, shop: document.getElementById('shop').value.trim()||null,
-      qty, price, price_per_g, type: selectedType||null,
-      flavors:[...selectedFlavors], pos:[...selectedPos], neg:[...selectedNeg],
-      ratings: Object.fromEntries(ratingKeys.map(k=>[k, ratings[k]||null])),
-      notes: document.getElementById('notes').value.trim()||null,
-    });
-    resetForm(); showToast('Strain salva!'); switchTab('list');
+    if (editId) {
+      await apiRequest('PATCH', `?id=eq.${editId}`, body);
+      showToast('Strain atualizada!');
+      editId = null;
+      document.getElementById('edit-banner').style.display = 'none';
+    } else {
+      await apiRequest('POST', '', body);
+      showToast('Strain salva!');
+    }
+    resetForm(); switchTab('list');
   } catch(err) { showToast('Erro: ' + err.message); }
   finally { btn.disabled = false; btn.textContent = 'Salvar Strain'; }
 }
