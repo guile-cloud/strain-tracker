@@ -197,8 +197,17 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL = 'https://mecbrpcqdzzifkuoxqkp.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_mIt2ZvHccNfA2CFdvGQEtw_ESH_Fl8K';
+// --- localStorage storage layer ---
+const LS_KEY = 'strain_tracker_entries';
+function lsGetAll() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; }
+}
+function lsSave(entries) {
+  localStorage.setItem(LS_KEY, JSON.stringify(entries));
+}
+function lsNextId(entries) {
+  return entries.length ? Math.max(...entries.map(e => e.id)) + 1 : 1;
+}
 
 const flavors = ['Terra','Pinho','Madeira','Floral','Cítrico','Frutado','Doce','Hortelã','Erva','Queimado','Picante','Diesel','Químico','Tropical','Uva','Mirtilo','Baunilha','Lavanda'];
 const posEffects = ['Relaxante','Criativo','Eufórico','Focado','Energético','Feliz','Sociável','Sonolento','Estimulante','Sedativo'];
@@ -271,25 +280,11 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
-async function apiRequest(method, path, body) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/strains${path||''}`, {
-    method,
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': method === 'POST' ? 'return=representation' : '' },
-    body: body ? JSON.stringify(body) : undefined
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return method === 'GET' ? res.json() : res;
-}
-async function loadEntries() {
+function loadEntries() {
   const el = document.getElementById('entries-list');
-  el.innerHTML = '<div class="loading">carregando...</div>';
-  try {
-    allEntries = await apiRequest('GET', '?order=created_at.desc');
-    updateTabBadge(allEntries.length);
-    renderCards(allEntries, el);
-  } catch(err) {
-    el.innerHTML = '<div class="empty">Erro ao carregar.<span>' + err.message + '</span></div>';
-  }
+  allEntries = lsGetAll().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  updateTabBadge(allEntries.length);
+  renderCards(allEntries, el);
 }
 function renderCards(entries, el) {
   if (!entries.length) { el.innerHTML = '<div class="empty">Nenhuma strain ainda.<span>Adiciona a primeira em Nova Strain.</span></div>'; return; }
@@ -332,12 +327,11 @@ function openModal(id, name) {
   document.getElementById('modal').classList.add('show');
 }
 function closeModal() { document.getElementById('modal').classList.remove('show'); deleteId = null; }
-async function confirmDelete() {
+function confirmDelete() {
   if (!deleteId) return;
-  try {
-    await apiRequest('DELETE', `?id=eq.${deleteId}`);
-    closeModal(); showToast('Entrada apagada.'); loadEntries();
-  } catch(err) { showToast('Erro ao apagar.'); }
+  const entries = lsGetAll().filter(e => e.id !== deleteId);
+  lsSave(entries);
+  closeModal(); showToast('Entrada apagada.'); loadEntries();
 }
 function openEdit(id) {
   const e = allEntries.find(x => x.id === id);
@@ -379,11 +373,11 @@ function cancelEdit() {
   document.getElementById('edit-banner').style.display = 'none';
   document.getElementById('save-btn').textContent = 'Salvar Strain';
 }
-async function saveEntry() {
+function saveEntry() {
   const strain = document.getElementById('strain').value.trim();
   if (!strain) { showToast('Coloca o nome da strain!'); return; }
   const btn = document.getElementById('save-btn');
-  btn.disabled = true; btn.textContent = 'Salvando...';
+  btn.disabled = true;
   const qty = parseFloat(document.getElementById('qty').value) || null;
   const price = parseFloat(document.getElementById('price').value) || null;
   const price_per_g = (qty && price) ? parseFloat((price/qty).toFixed(2)) : null;
@@ -394,19 +388,24 @@ async function saveEntry() {
     ratings: Object.fromEntries(ratingKeys.map(k=>[k, ratings[k]||null])),
     notes: document.getElementById('notes').value.trim()||null,
   };
-  try {
-    if (editId) {
-      await apiRequest('PATCH', `?id=eq.${editId}`, body);
-      showToast('Strain atualizada!');
-      editId = null;
-      document.getElementById('edit-banner').style.display = 'none';
-    } else {
-      await apiRequest('POST', '', body);
-      showToast('Strain salva!');
-    }
-    resetForm(); switchTab('list');
-  } catch(err) { showToast('Erro: ' + err.message); }
-  finally { btn.disabled = false; btn.textContent = 'Salvar Strain'; }
+  const entries = lsGetAll();
+  if (editId) {
+    const idx = entries.findIndex(e => e.id === editId);
+    if (idx !== -1) entries[idx] = { ...entries[idx], ...body };
+    lsSave(entries);
+    showToast('Strain atualizada!');
+    editId = null;
+    document.getElementById('edit-banner').style.display = 'none';
+  } else {
+    body.id = lsNextId(entries);
+    body.created_at = new Date().toISOString();
+    entries.push(body);
+    lsSave(entries);
+    showToast('Strain salva!');
+  }
+  btn.disabled = false;
+  document.getElementById('save-btn').textContent = 'Salvar Strain';
+  resetForm(); switchTab('list');
 }
 function resetForm() {
   ['strain','shop','qty','price','notes'].forEach(id => document.getElementById(id).value = '');
