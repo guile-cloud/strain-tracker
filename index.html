@@ -1,194 +1,228 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>strain.log</title>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg: #09090b;
-      --card: #18181b;
-      --card2: #1c1c1f;
-      --border: #27272a;
-      --border-subtle: #1f1f22;
-      --text: #fafafa;
-      --text-muted: #a1a1aa;
-      --text-dim: #52525b;
-      --accent: #a3e635;
-      --accent-fg: #09090b;
-      --destructive: #ef4444;
-      --destructive-muted: #7f1d1d;
-      --ring: #3f3f46;
-      --sativa-bg: #14260a; --sativa-text: #86efac; --sativa-border: #166534;
-      --indica-bg: #0c1a2e; --indica-text: #93c5fd; --indica-border: #1d4ed8;
-      --hibrida-bg: #2a1a06; --hibrida-text: #fcd34d; --hibrida-border: #b45309;
-      --flavor-bg: #1a1230; --flavor-text: #c4b5fd; --flavor-border: #7c3aed;
-      --pos-bg: #052e16; --pos-text: #86efac; --pos-border: #15803d;
-      --neg-bg: #450a0a; --neg-text: #fca5a5; --neg-border: #b91c1c;
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-serif; min-height: 100vh; }
-    .app { max-width: 620px; margin: 0 auto; padding: 0 16px 90px; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>strain.log</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:#09090b; --card:#18181b; --card2:#1c1c1f; --card3:#202023;
+  --border:#27272a; --border-subtle:#1f1f22; --text:#fafafa;
+  --text-muted:#a1a1aa; --text-dim:#52525b;
+  --accent:#a3e635; --accent-dim:#4d6b19; --accent-fg:#09090b;
+  --gold:#f59e0b; --gold-bg:#1c1400; --gold-border:#78350f;
+  --destructive:#ef4444; --destructive-muted:#7f1d1d; --ring:#3f3f46;
+  --sativa-bg:#14260a; --sativa-text:#86efac; --sativa-border:#166534;
+  --indica-bg:#0c1a2e; --indica-text:#93c5fd; --indica-border:#1d4ed8;
+  --hibrida-bg:#2a1a06; --hibrida-text:#fcd34d; --hibrida-border:#b45309;
+  --flavor-bg:#1a1230; --flavor-text:#c4b5fd; --flavor-border:#7c3aed;
+  --pos-bg:#052e16; --pos-text:#86efac; --pos-border:#15803d;
+  --neg-bg:#450a0a; --neg-text:#fca5a5; --neg-border:#b91c1c;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Geist',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+.app{max-width:620px;margin:0 auto;padding:0 16px 90px;}
 
-    /* ── Header ── */
-    .header { display: flex; align-items: center; justify-content: space-between; padding: 24px 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-    .logo { font-family: 'Geist Mono', monospace; font-size: 16px; font-weight: 600; color: var(--text); }
-    .logo span { color: var(--accent); }
-    .header-actions { display: flex; gap: 6px; }
-    .hdr-btn { display: flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: 7px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 12px; font-family: 'Geist', sans-serif; cursor: pointer; transition: all 0.15s; }
-    .hdr-btn:hover { background: var(--card); color: var(--text); border-color: var(--ring); }
+/* ── Header ── */
+.header{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+.logo{font-family:'Geist Mono',monospace;font-size:15px;font-weight:600;color:var(--text);}
+.logo span{color:var(--accent);}
+.header-actions{display:flex;gap:6px;}
+.hdr-btn{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:12px;font-family:'Geist',sans-serif;cursor:pointer;transition:all .15s;}
+.hdr-btn:hover{background:var(--card);color:var(--text);border-color:var(--ring);}
 
-    /* ── Bottom Nav ── */
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; }
-    .bottom-nav-inner { max-width: 620px; width: 100%; background: var(--card); border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px 0; height: 64px; gap: 0; }
-    .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; cursor: pointer; color: var(--text-dim); font-size: 10px; font-family: 'Geist', sans-serif; font-weight: 500; padding: 10px 0; transition: color 0.15s; letter-spacing: 0.03em; }
-    .nav-btn.active { color: var(--text); }
-    .nav-btn svg { transition: color 0.15s; }
-    .nav-add { flex: 0 0 auto; margin: 0 20px; }
-    .nav-add-btn { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; box-shadow: 0 4px 16px rgba(163,230,53,0.25); }
-    .nav-add-btn:hover { opacity: 0.88; }
-    .nav-add-btn.editing { background: #fde68a; box-shadow: 0 4px 16px rgba(253,230,138,0.2); }
+/* ── Bottom Nav ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;display:flex;justify-content:center;}
+.bottom-nav-inner{max-width:620px;width:100%;background:rgba(24,24,27,0.96);backdrop-filter:blur(12px);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 8px;height:62px;}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:transparent;border:none;cursor:pointer;color:var(--text-dim);font-size:9px;font-family:'Geist',sans-serif;font-weight:500;padding:8px 0;transition:color .15s;letter-spacing:.04em;text-transform:uppercase;}
+.nav-btn.active{color:var(--accent);}
+.nav-add{flex:0 0 auto;margin:0 4px;}
+.nav-add-btn{width:46px;height:46px;border-radius:13px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 4px 16px rgba(163,230,53,.3);}
+.nav-add-btn:hover{opacity:.88;}
+.nav-add-btn.editing{background:#fde68a;box-shadow:0 4px 16px rgba(253,230,138,.2);}
 
-    /* ── Pages ── */
-    .page { display: none; }
-    .page.active { display: block; }
+/* ── Pages ── */
+.page{display:none;animation:fadeIn .15s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 
-    /* ── Form ── */
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; }
-    .field input, .field textarea {
-      width: 100%; background: var(--card); border: 1px solid var(--border);
-      border-radius: 8px; padding: 9px 12px; font-size: 14px; color: var(--text);
-      font-family: 'Geist', sans-serif; outline: none; transition: border-color 0.15s, box-shadow 0.15s;
-      -webkit-appearance: none;
-    }
-    .field input[type="date"] { color-scheme: dark; }
-    .field input:focus, .field textarea:focus { border-color: var(--ring); box-shadow: 0 0 0 2px rgba(163,230,53,0.08); }
-    .field textarea { resize: vertical; min-height: 80px; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .price-calc { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-size: 13px; font-family: 'Geist Mono', monospace; color: var(--accent); display: flex; align-items: center; justify-content: center; min-height: 40px; }
+/* ── Form ── */
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--text-muted);margin-bottom:5px;letter-spacing:.03em;}
+.field input,.field textarea{width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--text);font-family:'Geist',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+.field input[type="date"]{color-scheme:dark;}
+.field input:focus,.field textarea:focus{border-color:var(--ring);box-shadow:0 0 0 2px rgba(163,230,53,.08);}
+.field textarea{resize:vertical;min-height:80px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.price-calc{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'Geist Mono',monospace;color:var(--accent);display:flex;align-items:center;justify-content:center;min-height:40px;}
+.type-group{display:flex;gap:6px;}
+.type-btn{flex:1;padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:11px;font-weight:500;color:var(--text-muted);cursor:pointer;text-align:center;transition:all .15s;font-family:'Geist',sans-serif;}
+.type-btn:hover{border-color:var(--ring);color:var(--text);}
+.type-btn.active.sativa{background:var(--sativa-bg);color:var(--sativa-text);border-color:var(--sativa-border);}
+.type-btn.active.indica{background:var(--indica-bg);color:var(--indica-text);border-color:var(--indica-border);}
+.type-btn.active.hibrida{background:var(--hibrida-bg);color:var(--hibrida-text);border-color:var(--hibrida-border);}
+.divider{border:none;border-top:1px solid var(--border-subtle);margin:16px 0;}
+.section-label{font-size:10px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-dim);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px;}
+.tags-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;color:var(--text-dim);border:1px solid var(--border);background:transparent;cursor:pointer;transition:all .12s;}
+.tag:hover{color:var(--text-muted);border-color:var(--ring);}
+.tag.flavor.selected{background:var(--flavor-bg);color:var(--flavor-text);border-color:var(--flavor-border);}
+.tag.positive.selected{background:var(--pos-bg);color:var(--pos-text);border-color:var(--pos-border);}
+.tag.negative.selected{background:var(--neg-bg);color:var(--neg-text);border-color:var(--neg-border);}
+.ratings-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.rating-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.rating-item label{font-size:10px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:8px;}
+.stars{display:flex;gap:3px;flex-wrap:wrap;}
+.star-btn{width:24px;height:24px;border-radius:5px;border:1px solid var(--border);background:var(--card2);color:var(--text-dim);font-size:10px;font-family:'Geist Mono',monospace;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .1s;font-weight:600;}
+.star-btn:hover{border-color:var(--accent);color:var(--accent);}
+.star-btn.active{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);}
+.overall-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-top:8px;}
+.overall-label{font-size:10px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.1em;}
+.overall-val{font-size:28px;font-family:'Geist Mono',monospace;color:var(--text);font-weight:600;margin-top:2px;}
+.save-btn{width:100%;margin-top:16px;padding:11px;background:var(--accent);color:var(--accent-fg);border:none;border-radius:9px;font-size:14px;font-weight:600;font-family:'Geist',sans-serif;cursor:pointer;transition:opacity .15s;}
+.save-btn:hover{opacity:.88;}
+.save-btn:disabled{opacity:.4;cursor:not-allowed;}
+.edit-banner{background:#1c1a08;border:1px solid #4a4208;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;font-family:'Geist Mono',monospace;color:#fde68a;display:none;align-items:center;justify-content:space-between;gap:8px;}
+.cancel-edit-btn{background:transparent;border:1px solid #4a4208;border-radius:6px;padding:4px 10px;font-size:11px;color:#fde68a;cursor:pointer;font-family:'Geist',sans-serif;font-weight:500;white-space:nowrap;}
+.cancel-edit-btn:hover{background:rgba(253,230,138,.08);}
 
-    .type-group { display: flex; gap: 8px; }
-    .type-btn { flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; text-align: center; transition: all 0.15s; font-family: 'Geist', sans-serif; }
-    .type-btn:hover { border-color: var(--ring); color: var(--text); }
-    .type-btn.active.sativa  { background: var(--sativa-bg);  color: var(--sativa-text);  border-color: var(--sativa-border);  }
-    .type-btn.active.indica  { background: var(--indica-bg);  color: var(--indica-text);  border-color: var(--indica-border);  }
-    .type-btn.active.hibrida { background: var(--hibrida-bg); color: var(--hibrida-text); border-color: var(--hibrida-border); }
+/* ── Cards ── */
+.entry-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:7px;transition:border-color .15s;position:relative;}
+.entry-card:hover{border-color:var(--ring);}
+.entry-card.is-favorite{border-color:var(--gold-border);background:linear-gradient(135deg,var(--card) 85%,rgba(245,158,11,.04));}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.card-left{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1;}
+.card-title-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.card-name{font-size:15px;font-weight:600;color:var(--text);}
+.card-right{display:flex;align-items:center;gap:2px;flex-shrink:0;}
+.card-date{font-size:11px;font-family:'Geist Mono',monospace;color:var(--text-muted);white-space:nowrap;margin-right:2px;}
+.card-meta{font-size:12px;color:var(--text-muted);}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px;}
+.card-tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:5px;border:1px solid;}
+.card-notes{font-size:13px;color:var(--text-muted);margin-top:9px;line-height:1.55;border-top:1px solid var(--border-subtle);padding-top:9px;}
+.type-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:5px;border:1px solid;display:inline-flex;align-items:center;letter-spacing:.02em;}
+.card-ratings{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;align-items:center;}
+.card-rating-item{font-size:11px;font-family:'Geist Mono',monospace;color:var(--text-muted);}
+.card-rating-item span{color:var(--text);font-weight:600;}
+.card-overall{font-size:15px;font-family:'Geist Mono',monospace;color:var(--text);font-weight:600;margin-left:auto;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:2px 9px;}
+.act-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;border:1px solid transparent;background:transparent;cursor:pointer;transition:all .12s;color:var(--text-muted);}
+.act-btn:hover{background:var(--card2);border-color:var(--border);color:var(--text);}
+.act-btn.del:hover{color:var(--destructive);border-color:var(--destructive-muted);background:rgba(239,68,68,.06);}
+.act-btn.edit:hover{color:var(--accent);border-color:var(--sativa-border);background:rgba(163,230,53,.06);}
+.fav-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;border:1px solid transparent;background:transparent;cursor:pointer;transition:all .12s;color:var(--text-dim);}
+.fav-btn.active{color:var(--gold);}
+.fav-btn:hover{color:var(--gold);}
+.count-badge{font-size:10px;font-family:'Geist Mono',monospace;background:var(--card2);border:1px solid var(--border);border-radius:20px;padding:1px 7px;color:var(--text-muted);margin-left:4px;}
 
-    .divider { border: none; border-top: 1px solid var(--border-subtle); margin: 18px 0; }
-    .section-label { font-size: 11px; font-weight: 500; font-family: 'Geist Mono', monospace; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+/* ── Filter bar ── */
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+.filter-bar::-webkit-scrollbar{display:none;}
+.filter-pill{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:transparent;color:var(--text-muted);cursor:pointer;white-space:nowrap;font-family:'Geist',sans-serif;transition:all .12s;}
+.filter-pill.active{background:var(--card2);color:var(--text);border-color:var(--ring);}
+.filter-pill.fav-filter.active{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-border);}
 
-    .tags-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag { padding: 4px 11px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--text-dim); border: 1px solid var(--border); background: transparent; cursor: pointer; transition: all 0.12s; }
-    .tag:hover { color: var(--text-muted); border-color: var(--ring); }
-    .tag.flavor.selected   { background: var(--flavor-bg); color: var(--flavor-text); border-color: var(--flavor-border); }
-    .tag.positive.selected { background: var(--pos-bg);    color: var(--pos-text);    border-color: var(--pos-border);    }
-    .tag.negative.selected { background: var(--neg-bg);    color: var(--neg-text);    border-color: var(--neg-border);    }
+/* ── Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;z-index:200;opacity:0;pointer-events:none;transition:opacity .15s;backdrop-filter:blur(3px);}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:360px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:6px;}
+.modal p{font-size:13px;color:var(--text-muted);margin-bottom:20px;line-height:1.5;}
+.modal-btns{display:flex;gap:8px;}
+.modal-btn{flex:1;padding:9px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Geist',sans-serif;border:1px solid var(--border);transition:all .12s;}
+.modal-btn.cancel{background:var(--card2);color:var(--text-muted);}
+.modal-btn.cancel:hover{color:var(--text);}
+.modal-btn.confirm{background:var(--destructive-muted);color:#fca5a5;border-color:#7f1d1d;}
+.modal-btn.confirm:hover{background:#991b1b;}
+.import-zone{border:2px dashed var(--border);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.import-zone:hover,.import-zone.drag{border-color:var(--accent);}
+.import-zone p{font-size:13px;color:var(--text-muted);margin-top:8px;}
+.import-zone small{font-size:11px;color:var(--text-dim);font-family:'Geist Mono',monospace;}
+#import-file{display:none;}
 
-    .ratings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .rating-item { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
-    .rating-item label { font-size: 11px; font-weight: 500; font-family: 'Geist Mono', monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 8px; }
-    .stars { display: flex; gap: 3px; flex-wrap: wrap; }
-    .star-btn { width: 24px; height: 24px; border-radius: 5px; border: 1px solid var(--border); background: var(--card2); color: var(--text-dim); font-size: 10px; font-family: 'Geist Mono', monospace; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.1s; font-weight: 600; }
-    .star-btn:hover { border-color: var(--accent); color: var(--accent); }
-    .star-btn.active { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
-    .overall-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; margin-top: 10px; }
-    .overall-label { font-size: 11px; font-weight: 500; font-family: 'Geist Mono', monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .overall-val { font-size: 30px; font-family: 'Geist Mono', monospace; color: var(--text); font-weight: 600; margin-top: 2px; }
+/* ── Stats ── */
+.stats-filter{display:inline-flex;gap:2px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:3px;margin-bottom:14px;}
+.stats-pill{padding:5px 12px;border-radius:6px;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;background:transparent;border:none;font-family:'Geist',sans-serif;transition:all .12s;}
+.stats-pill.active{background:var(--card2);color:var(--text);}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
+.stat-card-label{font-size:10px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.stat-card-value{font-size:26px;font-family:'Geist Mono',monospace;color:var(--text);font-weight:600;}
+.stat-card-value span{font-size:13px;color:var(--text-muted);margin-left:4px;font-weight:400;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.bar-chart{display:flex;flex-direction:column;gap:9px;margin-top:4px;}
+.bar-row{display:flex;align-items:center;gap:10px;}
+.bar-label{font-size:12px;color:var(--text-muted);width:88px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bar-track{flex:1;height:7px;background:var(--card2);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:var(--accent);transition:width .5s cubic-bezier(.4,0,.2,1);}
+.bar-fill.blue{background:var(--indica-text);}
+.bar-fill.amber{background:var(--hibrida-text);}
+.bar-fill.purple{background:var(--flavor-text);}
+.bar-val{font-size:11px;font-family:'Geist Mono',monospace;color:var(--text-muted);width:30px;text-align:right;flex-shrink:0;}
 
-    .save-btn { width: 100%; margin-top: 18px; padding: 10px; background: var(--accent); color: var(--accent-fg); border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Geist', sans-serif; cursor: pointer; transition: opacity 0.15s; }
-    .save-btn:hover { opacity: 0.88; }
-    .save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+/* ── Compare ── */
+.compare-picker{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.cmp-strain-chip{padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--card);color:var(--text-muted);cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:6px;}
+.cmp-strain-chip.selected{border-color:var(--accent);color:var(--accent);background:rgba(163,230,53,.06);}
+.cmp-strain-chip .chip-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);}
+.cmp-strain-chip.selected .chip-dot{background:var(--accent);}
+.cmp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:16px;}
+.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.cmp-card-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.cmp-card-sub{font-size:11px;color:var(--text-muted);margin-bottom:12px;}
+.cmp-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border-subtle);}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-key{font-size:11px;font-family:'Geist Mono',monospace;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em;}
+.cmp-val{font-size:13px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text);}
+.cmp-val.better{color:var(--accent);}
+.cmp-val.worse{color:var(--text-muted);}
+.radar-wrap{display:flex;justify-content:center;margin:12px 0;}
+.cmp-tags-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
 
-    .edit-banner { background: #1c1a08; border: 1px solid #4a4208; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; font-family: 'Geist Mono', monospace; color: #fde68a; display: none; align-items: center; justify-content: space-between; gap: 8px; }
-    .cancel-edit-btn { background: transparent; border: 1px solid #4a4208; border-radius: 6px; padding: 4px 10px; font-size: 11px; color: #fde68a; cursor: pointer; font-family: 'Geist', sans-serif; font-weight: 500; white-space: nowrap; }
-    .cancel-edit-btn:hover { background: rgba(253,230,138,0.08); }
+/* ── Sensory Profile ── */
+.profile-hero{background:linear-gradient(135deg,#0f1a08 0%,#0a1020 100%);border:1px solid var(--border);border-radius:14px;padding:22px 20px;margin-bottom:12px;position:relative;overflow:hidden;}
+.profile-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:radial-gradient(circle,rgba(163,230,53,.08) 0%,transparent 70%);pointer-events:none;}
+.profile-title{font-size:11px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;}
+.profile-headline{font-size:18px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:4px;}
+.profile-sub{font-size:13px;color:var(--text-muted);line-height:1.5;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;}
+.profile-card.full{grid-column:1/-1;}
+.profile-card-label{font-size:10px;font-weight:600;font-family:'Geist Mono',monospace;color:var(--text-dim);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;}
+.bubble-cloud{display:flex;flex-wrap:wrap;gap:6px;}
+.bubble{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid;}
+.insight-box{background:rgba(163,230,53,.04);border:1px solid rgba(163,230,53,.15);border-radius:10px;padding:14px 16px;margin-bottom:8px;}
+.insight-icon{font-size:20px;margin-bottom:6px;}
+.insight-text{font-size:14px;color:var(--text);line-height:1.55;}
+.insight-text strong{color:var(--accent);}
 
-    /* ── Cards ── */
-    .entry-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; transition: border-color 0.15s; }
-    .entry-card:hover { border-color: var(--ring); }
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-    .card-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
-    .card-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .card-name { font-size: 15px; font-weight: 600; color: var(--text); }
-    .card-right { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
-    .card-date { font-size: 12px; font-family: 'Geist Mono', monospace; color: var(--text-muted); white-space: nowrap; margin-right: 4px; }
-    .card-meta { font-size: 12px; color: var(--text-muted); }
-    .card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
-    .card-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 5px; border: 1px solid; }
-    .card-notes { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.55; border-top: 1px solid var(--border-subtle); padding-top: 10px; }
-    .type-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 5px; border: 1px solid; display: inline-flex; align-items: center; }
-    .card-ratings { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; align-items: center; }
-    .card-rating-item { font-size: 11px; font-family: 'Geist Mono', monospace; color: var(--text-muted); }
-    .card-rating-item span { color: var(--text); font-weight: 600; }
-    /* overall em branco, fora da paleta do accent */
-    .card-overall { font-size: 18px; font-family: 'Geist Mono', monospace; color: var(--text); font-weight: 600; margin-left: auto; background: var(--card2); border: 1px solid var(--border); border-radius: 7px; padding: 2px 10px; }
+/* ── Terpenes ── */
+.terp-header{text-align:center;padding:24px 0 16px;}
+.terp-header h2{font-size:20px;font-weight:600;margin-bottom:6px;}
+.terp-header p{font-size:13px;color:var(--text-muted);line-height:1.55;max-width:440px;margin:0 auto;}
+.terp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.terp-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .15s;}
+.terp-card:hover{border-color:var(--ring);transform:translateY(-1px);}
+.terp-card.expanded{border-color:var(--ring);}
+.terp-emoji{font-size:28px;margin-bottom:8px;display:block;}
+.terp-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.terp-flavor{font-size:11px;color:var(--text-muted);margin-bottom:10px;}
+.terp-effect-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.terp-tag{font-size:10px;font-weight:500;padding:2px 8px;border-radius:20px;border:1px solid var(--border);color:var(--text-dim);}
+.terp-detail{overflow:hidden;max-height:0;transition:max-height .3s ease;font-size:12px;color:var(--text-muted);line-height:1.6;}
+.terp-card.expanded .terp-detail{max-height:200px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border-subtle);}
+.terp-found-in{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.terp-found-tag{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--card2);color:var(--text-dim);border:1px solid var(--border);}
 
-    .act-btn { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; border: 1px solid transparent; background: transparent; cursor: pointer; transition: all 0.12s; color: var(--text-muted); }
-    .act-btn:hover { background: var(--card2); border-color: var(--border); color: var(--text); }
-    .act-btn.del:hover  { color: var(--destructive); border-color: var(--destructive-muted); background: rgba(239,68,68,0.06); }
-    .act-btn.edit:hover { color: var(--accent); border-color: var(--sativa-border); background: rgba(163,230,53,0.06); }
-
-    .count-badge { font-size: 10px; font-family: 'Geist Mono', monospace; background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; color: var(--text-muted); margin-left: 4px; }
-
-    /* ── Modal ── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.15s; backdrop-filter: blur(2px); }
-    .modal-overlay.show { opacity: 1; pointer-events: all; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; max-width: 340px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
-    .modal h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
-    .modal p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
-    .modal-btns { display: flex; gap: 8px; }
-    .modal-btn { flex: 1; padding: 9px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Geist', sans-serif; border: 1px solid var(--border); transition: all 0.12s; }
-    .modal-btn.cancel  { background: var(--card2); color: var(--text-muted); }
-    .modal-btn.cancel:hover { color: var(--text); }
-    .modal-btn.confirm { background: var(--destructive-muted); color: #fca5a5; border-color: #7f1d1d; }
-    .modal-btn.confirm:hover { background: #991b1b; }
-
-    /* ── Import modal ── */
-    .import-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 28px; text-align: center; cursor: pointer; transition: border-color 0.15s; }
-    .import-zone:hover, .import-zone.drag { border-color: var(--accent); }
-    .import-zone p { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
-    .import-zone span { font-size: 11px; color: var(--text-dim); font-family: 'Geist Mono', monospace; }
-    #import-file { display: none; }
-
-    /* ── Stats ── */
-    .stats-filter { display: inline-flex; gap: 2px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 3px; margin-bottom: 16px; }
-    .stats-pill { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; background: transparent; border: none; font-family: 'Geist', sans-serif; transition: all 0.12s; }
-    .stats-pill.active { background: var(--card2); color: var(--text); }
-    .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
-    .stat-card-label { font-size: 11px; font-weight: 500; font-family: 'Geist Mono', monospace; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-    .stat-card-value { font-size: 26px; font-family: 'Geist Mono', monospace; color: var(--text); font-weight: 600; }
-    .stat-card-value span { font-size: 13px; color: var(--text-muted); margin-left: 4px; font-weight: 400; }
-    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-    .ranking-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border-subtle); }
-    .ranking-item:last-child { border-bottom: none; }
-    .ranking-name { font-size: 13px; color: var(--text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
-    .ranking-val { font-size: 12px; font-family: 'Geist Mono', monospace; color: var(--accent); font-weight: 600; flex-shrink: 0; margin-left: 8px; }
-
-    /* ── Bar chart ── */
-    .bar-chart { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
-    .bar-row { display: flex; align-items: center; gap: 10px; }
-    .bar-label { font-size: 12px; color: var(--text-muted); width: 90px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .bar-track { flex: 1; height: 8px; background: var(--card2); border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.4s ease; }
-    .bar-fill.blue  { background: var(--indica-text); }
-    .bar-fill.amber { background: var(--hibrida-text); }
-    .bar-val { font-size: 11px; font-family: 'Geist Mono', monospace; color: var(--text-muted); width: 32px; text-align: right; flex-shrink: 0; }
-
-    /* ── Radar-like ratings chart ── */
-    .ratings-chart-wrap { display: flex; justify-content: center; padding: 8px 0; }
-
-    .empty { text-align: center; padding: 56px 0; color: var(--text-muted); font-size: 14px; }
-    .empty span { display: block; font-size: 12px; color: var(--text-dim); margin-top: 6px; font-family: 'Geist Mono', monospace; }
-    .loading { text-align: center; padding: 32px 0; color: var(--text-dim); font-size: 12px; font-family: 'Geist Mono', monospace; }
-
-    .toast { position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%) translateY(8px); background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: all 0.2s; white-space: nowrap; z-index: 300; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-    .page-title { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 16px; font-family: 'Geist Mono', monospace; letter-spacing: 0.04em; text-transform: uppercase; }
-  </style>
+/* ── Misc ── */
+.empty{text-align:center;padding:52px 0;color:var(--text-muted);font-size:14px;}
+.empty span{display:block;font-size:12px;color:var(--text-dim);margin-top:6px;font-family:'Geist Mono',monospace;}
+.loading{text-align:center;padding:32px 0;color:var(--text-dim);font-size:12px;font-family:'Geist Mono',monospace;}
+.toast{position:fixed;bottom:74px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:10px 18px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;pointer-events:none;transition:all .2s;white-space:nowrap;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.section-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:14px;}
+</style>
 </head>
 <body>
 <div class="app">
@@ -196,57 +230,60 @@
     <span class="logo">strain<span>.</span>log</span>
     <div class="header-actions">
       <button class="hdr-btn" onclick="openImport()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Import
       </button>
       <button class="hdr-btn" onclick="exportData()">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         Export
       </button>
     </div>
   </div>
 
-  <!-- Strains list -->
+  <!-- LIST -->
   <div class="page active" id="page-list">
-    <div id="entries-list"><div class="loading">carregando...</div></div>
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-pill active" onclick="setFilter(this,'all')">Todas</button>
+      <button class="filter-pill fav-filter" onclick="setFilter(this,'fav')">★ Favoritas</button>
+      <button class="filter-pill" onclick="setFilter(this,'Sativa')">Sativa</button>
+      <button class="filter-pill" onclick="setFilter(this,'Indica')">Indica</button>
+      <button class="filter-pill" onclick="setFilter(this,'Híbrida')">Híbrida</button>
+    </div>
+    <div id="entries-list"></div>
   </div>
 
-  <!-- Add / Edit form -->
+  <!-- ADD/EDIT -->
   <div class="page" id="page-add">
     <div class="edit-banner" id="edit-banner">
       <span>✏️ Editando entrada</span>
       <button class="cancel-edit-btn" onclick="cancelEdit()">Cancelar</button>
     </div>
     <div class="grid2">
-      <div class="field"><label>Nome da Strain</label><input type="text" id="strain" placeholder="Ex: Blue Dream" /></div>
-      <div class="field"><label>Coffeeshop</label><input type="text" id="shop" placeholder="Ex: Boerejongens" /></div>
+      <div class="field"><label>Nome da Strain</label><input type="text" id="strain" placeholder="Ex: Blue Dream"/></div>
+      <div class="field"><label>Coffeeshop</label><input type="text" id="shop" placeholder="Ex: Boerejongens"/></div>
     </div>
     <div class="grid2">
-      <div class="field"><label>Data</label><input type="date" id="entry-date" /></div>
-      <div class="field">
-        <label>Tipo</label>
+      <div class="field"><label>Data</label><input type="date" id="entry-date"/></div>
+      <div class="field"><label>Tipo</label>
         <div class="type-group">
-          <div class="type-btn sativa"  onclick="selectType(this,'Sativa')">Sativa</div>
-          <div class="type-btn indica"  onclick="selectType(this,'Indica')">Indica</div>
+          <div class="type-btn sativa" onclick="selectType(this,'Sativa')">Sativa</div>
+          <div class="type-btn indica" onclick="selectType(this,'Indica')">Indica</div>
           <div class="type-btn hibrida" onclick="selectType(this,'Híbrida')">Híbrida</div>
         </div>
       </div>
     </div>
     <div class="grid3">
-      <div class="field"><label>Quantidade (g)</label><input type="number" id="qty" placeholder="0.0" step="0.1" oninput="calcPrice()" /></div>
-      <div class="field"><label>Total pago (€)</label><input type="number" id="price" placeholder="0.00" step="0.01" oninput="calcPrice()" /></div>
+      <div class="field"><label>Quantidade (g)</label><input type="number" id="qty" placeholder="0.0" step="0.1" oninput="calcPrice()"/></div>
+      <div class="field"><label>Total pago (€)</label><input type="number" id="price" placeholder="0.00" step="0.01" oninput="calcPrice()"/></div>
       <div class="field"><label>€ / g</label><div class="price-calc" id="price-per-g">—</div></div>
     </div>
     <hr class="divider">
-    <div class="section-label">Sabores</div>
-    <div class="tags-grid" id="flavors"></div>
+    <div class="section-label">Sabores</div><div class="tags-grid" id="flavors"></div>
     <hr class="divider">
-    <div class="section-label">Efeitos positivos</div>
-    <div class="tags-grid" id="pos-effects"></div>
-    <div class="section-label" style="margin-top:14px">Efeitos negativos</div>
-    <div class="tags-grid" id="neg-effects"></div>
+    <div class="section-label">Efeitos positivos</div><div class="tags-grid" id="pos-effects"></div>
+    <div class="section-label" style="margin-top:12px">Efeitos negativos</div><div class="tags-grid" id="neg-effects"></div>
     <hr class="divider">
-    <div class="section-label" style="margin-bottom:12px">Avaliações</div>
+    <div class="section-label" style="margin-bottom:10px">Avaliações</div>
     <div class="ratings-grid">
       <div class="rating-item"><label>Aparência</label><div class="stars" id="r-aparencia"></div></div>
       <div class="rating-item"><label>Cheiro</label><div class="stars" id="r-cheiro"></div></div>
@@ -254,16 +291,20 @@
       <div class="rating-item"><label>Queima</label><div class="stars" id="r-queima"></div></div>
       <div class="rating-item" style="grid-column:1/-1"><label>Stoned</label><div class="stars" id="r-stoned"></div></div>
     </div>
-    <div class="overall-box">
-      <div class="overall-label">Overall</div>
-      <div class="overall-val" id="overall-display">—</div>
-    </div>
+    <div class="overall-box"><div class="overall-label">Overall</div><div class="overall-val" id="overall-display">—</div></div>
     <hr class="divider">
     <div class="field"><label>Comentários</label><textarea id="notes" placeholder="Anota suas impressões..."></textarea></div>
     <button class="save-btn" id="save-btn" onclick="saveEntry()">Salvar Strain</button>
   </div>
 
-  <!-- Stats -->
+  <!-- COMPARE -->
+  <div class="page" id="page-compare">
+    <div class="section-title">Comparar Strains</div>
+    <div id="compare-picker" class="compare-picker"></div>
+    <div id="compare-content"></div>
+  </div>
+
+  <!-- STATS -->
   <div class="page" id="page-stats">
     <div class="stats-filter">
       <button class="stats-pill active" onclick="setStatsPeriod(this,'week')">Semana</button>
@@ -273,29 +314,45 @@
     </div>
     <div id="stats-content"></div>
   </div>
+
+  <!-- PROFILE -->
+  <div class="page" id="page-profile">
+    <div id="profile-content"></div>
+  </div>
+
+  <!-- TERPENES -->
+  <div class="page" id="page-terps">
+    <div class="terp-header">
+      <h2>Terpenos</h2>
+      <p>Os compostos aromáticos que moldam o sabor, o cheiro e os efeitos de cada strain. Toca em um para saber mais.</p>
+    </div>
+    <div class="terp-grid" id="terp-grid"></div>
+  </div>
 </div>
 
 <!-- Bottom Nav -->
 <nav class="bottom-nav">
   <div class="bottom-nav-inner">
     <button class="nav-btn active" id="nav-list" onclick="switchTab('list')">
-      <!-- leaf icon -->
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
-        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-      </svg>
-      Strains
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Log
+    </button>
+    <button class="nav-btn" id="nav-compare" onclick="switchTab('compare')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Comparar
     </button>
     <div class="nav-add">
-      <button class="nav-add-btn" id="nav-add-btn" onclick="onAddBtn()" title="Nova Strain">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#09090b" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <button class="nav-add-btn" id="nav-add-btn" onclick="onAddBtn()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#09090b" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       </button>
     </div>
-    <button class="nav-btn" id="nav-stats" onclick="switchTab('stats')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-      </svg>
-      Stats
+    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Perfil
+    </button>
+    <button class="nav-btn" id="nav-terps" onclick="switchTab('terps')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l4.5 4.5"/></svg>
+      Terpenos
     </button>
   </div>
 </nav>
@@ -316,153 +373,218 @@
 <div class="modal-overlay" id="import-modal">
   <div class="modal">
     <h3>Importar backup</h3>
-    <p>Seleciona um arquivo JSON exportado anteriormente. As entradas serão mescladas com as existentes.</p>
+    <p>Seleciona um JSON exportado anteriormente. As entradas serão mescladas.</p>
     <div class="import-zone" id="import-zone" onclick="document.getElementById('import-file').click()" ondragover="onDragOver(event)" ondrop="onDrop(event)">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       <p>Clica ou arrasta o arquivo aqui</p>
-      <span>formato: strain-log-*.json</span>
+      <small>formato: strain-log-*.json</small>
     </div>
-    <input type="file" id="import-file" accept=".json" onchange="handleImportFile(this)" />
-    <div class="modal-btns" style="margin-top:16px">
-      <button class="modal-btn cancel" onclick="closeImport()">Fechar</button>
-    </div>
+    <input type="file" id="import-file" accept=".json" onchange="handleImportFile(this)"/>
+    <div class="modal-btns" style="margin-top:14px"><button class="modal-btn cancel" onclick="closeImport()">Fechar</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── localStorage ──────────────────────────────────────────────
-const LS_KEY = 'strain_tracker_entries';
-function lsGetAll() { try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch { return []; } }
-function lsSave(e) { localStorage.setItem(LS_KEY, JSON.stringify(e)); }
-function lsNextId(e) { return e.length ? Math.max(...e.map(x => x.id)) + 1 : 1; }
+// ─────────────────────────────────────────────
+// localStorage
+// ─────────────────────────────────────────────
+const LS_KEY='strain_tracker_entries';
+function lsGetAll(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]');}catch{return[];}}
+function lsSave(e){localStorage.setItem(LS_KEY,JSON.stringify(e));}
+function lsNextId(e){return e.length?Math.max(...e.map(x=>x.id))+1:1;}
 
-// ── Constants ─────────────────────────────────────────────────
-const flavors    = ['Terra','Pinho','Madeira','Floral','Cítrico','Frutado','Doce','Hortelã','Erva','Queimado','Picante','Diesel','Químico','Tropical','Uva','Mirtilo','Baunilha','Lavanda'];
-const posEffects = ['Relaxante','Criativo','Eufórico','Focado','Energético','Feliz','Sociável','Sonolento','Estimulante','Sedativo'];
-const negEffects = ['Ansiedade','Boca seca','Olhos vermelhos','Paranoia','Tontura','Fome','Dor de cabeça','Lentidão'];
-const ratingKeys = ['aparencia','cheiro','gosto','queima','stoned'];
-const ratingLabels = { aparencia:'Aparência', cheiro:'Cheiro', gosto:'Gosto', queima:'Queima', stoned:'Stoned' };
-const typeStyle = {
-  'Sativa':  { bg:'var(--sativa-bg)',  color:'var(--sativa-text)',  border:'var(--sativa-border)'  },
-  'Indica':  { bg:'var(--indica-bg)',  color:'var(--indica-text)',  border:'var(--indica-border)'  },
-  'Híbrida': { bg:'var(--hibrida-bg)', color:'var(--hibrida-text)', border:'var(--hibrida-border)' },
+// ─────────────────────────────────────────────
+// Constants
+// ─────────────────────────────────────────────
+const flavors=['Terra','Pinho','Madeira','Floral','Cítrico','Frutado','Doce','Hortelã','Erva','Queimado','Picante','Diesel','Químico','Tropical','Uva','Mirtilo','Baunilha','Lavanda'];
+const posEffects=['Relaxante','Criativo','Eufórico','Focado','Energético','Feliz','Sociável','Sonolento','Estimulante','Sedativo'];
+const negEffects=['Ansiedade','Boca seca','Olhos vermelhos','Paranoia','Tontura','Fome','Dor de cabeça','Lentidão'];
+const ratingKeys=['aparencia','cheiro','gosto','queima','stoned'];
+const ratingLabels={aparencia:'Aparência',cheiro:'Cheiro',gosto:'Gosto',queima:'Queima',stoned:'Stoned'};
+const typeStyle={
+  'Sativa':{bg:'var(--sativa-bg)',color:'var(--sativa-text)',border:'var(--sativa-border)'},
+  'Indica':{bg:'var(--indica-bg)',color:'var(--indica-text)',border:'var(--indica-border)'},
+  'Híbrida':{bg:'var(--hibrida-bg)',color:'var(--hibrida-text)',border:'var(--hibrida-border)'},
 };
 
-// ── State ─────────────────────────────────────────────────────
-let selectedType = '', deleteId = null, editId = null, statsPeriod = 'week', allEntries = [];
-let selectedFlavors = new Set(), selectedPos = new Set(), selectedNeg = new Set();
-let ratings = { aparencia:0, cheiro:0, gosto:0, queima:0, stoned:0 };
-let currentTab = 'list';
+const TERPENES=[
+  {name:'Mirceno',emoji:'🌿',flavor:'Terra · Manga · Erva',effects:['Relaxante','Sedativo','Analgésico'],
+   desc:'O terpeno mais comum na cannabis. Responsável pelo perfil terroso e frutal. Potencializa o efeito sedativo — strains com alto mirceno tendem a um efeito "couchlock".',
+   foundIn:['OG Kush','Blue Dream','Granddaddy Purple']},
+  {name:'Limoneno',emoji:'🍋',flavor:'Cítrico · Limão · Laranja',effects:['Energético','Anti-estresse','Antidepressivo'],
+   desc:'Segundo terpeno mais abundante. Cheiro cítrico inconfundível. Associado a melhora de humor e alívio de estresse. Muito presente em strains Sativa.',
+   foundIn:['Super Lemon Haze','Durban Poison','Jack Herer']},
+  {name:'Cariofileno',emoji:'🫙',flavor:'Pimenta · Madeira · Especiarias',effects:['Anti-inflamatório','Ansiolítico','Relaxante'],
+   desc:'Único terpeno que interage diretamente com receptores CB2. Tem ação anti-inflamatória significativa. Aroma apimentado e amadeirado.',
+   foundIn:['Girl Scout Cookies','Sour Diesel','Chemdawg']},
+  {name:'Linalol',emoji:'💜',flavor:'Floral · Lavanda · Doce',effects:['Calmante','Ansiolítico','Induz sono'],
+   desc:'O terpeno da lavanda. Efeito profundamente calmante, muito usado para ansiedade e insônia. Aroma floral delicado.',
+   foundIn:['Amnesia Haze','Lavender','LA Confidential']},
+  {name:'Pineno',emoji:'🌲',flavor:'Pinho · Menta · Fresco',effects:['Foco','Memória','Broncodilatador'],
+   desc:'Aroma fresco de pinho. Interessante porque pode contrariar a perda de memória de curto prazo causada pelo THC. Promove alerta mental.',
+   foundIn:['Jack Herer','Blue Dream','Chemdawg']},
+  {name:'Terpinoleno',emoji:'🍏',flavor:'Floral · Erva · Cítrico suave',effects:['Sedativo','Antioxidante','Antibacteriano'],
+   desc:'Perfil aromático complexo e multifacetado — floral, erval e levemente cítrico ao mesmo tempo. Menos estudado, mas presente em strains muito populares.',
+   foundIn:['Jack Herer','Ghost Train Haze','Dutch Treat']},
+  {name:'Humuleno',emoji:'🍺',flavor:'Terra · Madeira · Lúpulo',effects:['Supressor apetite','Anti-inflamatório','Antibacteriano'],
+   desc:'Compartilhado com o lúpulo da cerveja. Uma raridade: suprime o apetite ao invés de aumentar. Sabor terroso e amadeirado.',
+   foundIn:['Girl Scout Cookies','Sour Diesel','White Widow']},
+  {name:'Ocimeno',emoji:'🌸',flavor:'Doce · Floral · Tropical',effects:['Antiviral','Antifúngico','Desobstruinte'],
+   desc:'Aroma doce e tropical. Propriedades medicinais promissoras. Contribui para perfis aromáticos complexos em strains premium.',
+   foundIn:['Golden Goat','Strawberry Cough','Clementine']},
+];
 
-// ── Init ──────────────────────────────────────────────────────
-function buildTags(id, items, set, cls) {
-  const el = document.getElementById(id);
-  items.forEach(item => {
-    const t = document.createElement('div');
-    t.className = 'tag ' + cls; t.textContent = item;
-    t.onclick = () => { set.has(item) ? set.delete(item) : set.add(item); t.classList.toggle('selected'); };
+// ─────────────────────────────────────────────
+// State
+// ─────────────────────────────────────────────
+let selectedType='',deleteId=null,editId=null,statsPeriod='week',allEntries=[];
+let selectedFlavors=new Set(),selectedPos=new Set(),selectedNeg=new Set();
+let ratings={aparencia:0,cheiro:0,gosto:0,queima:0,stoned:0};
+let currentTab='list',currentFilter='all';
+let compareSelected=new Set();
+
+// ─────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────
+function buildTags(id,items,set,cls){
+  const el=document.getElementById(id);
+  items.forEach(item=>{
+    const t=document.createElement('div');
+    t.className='tag '+cls;t.textContent=item;
+    t.onclick=()=>{set.has(item)?set.delete(item):set.add(item);t.classList.toggle('selected');};
     el.appendChild(t);
   });
 }
-buildTags('flavors', flavors, selectedFlavors, 'flavor');
-buildTags('pos-effects', posEffects, selectedPos, 'positive');
-buildTags('neg-effects', negEffects, selectedNeg, 'negative');
+buildTags('flavors',flavors,selectedFlavors,'flavor');
+buildTags('pos-effects',posEffects,selectedPos,'positive');
+buildTags('neg-effects',negEffects,selectedNeg,'negative');
 
-function buildRatings() {
-  ratingKeys.forEach(key => {
-    const c = document.getElementById('r-' + key);
-    for (let i = 1; i <= 10; i++) {
-      const b = document.createElement('div');
-      b.className = 'star-btn'; b.textContent = i; b.dataset.val = i;
-      b.onclick = () => { ratings[key] = i; updateStars(key); updateOverall(); };
+function buildRatings(){
+  ratingKeys.forEach(key=>{
+    const c=document.getElementById('r-'+key);
+    for(let i=1;i<=10;i++){
+      const b=document.createElement('div');
+      b.className='star-btn';b.textContent=i;b.dataset.val=i;
+      b.onclick=()=>{ratings[key]=i;updateStars(key);updateOverall();};
       c.appendChild(b);
     }
   });
 }
 buildRatings();
-document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
+document.getElementById('entry-date').value=new Date().toISOString().slice(0,10);
+buildTerpGrid();
 
-// ── Helpers ───────────────────────────────────────────────────
-function updateStars(key) {
-  document.querySelectorAll(`#r-${key} .star-btn`).forEach(b => b.classList.toggle('active', +b.dataset.val === ratings[key]));
+// ─────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────
+function updateStars(key){
+  document.querySelectorAll(`#r-${key} .star-btn`).forEach(b=>b.classList.toggle('active',+b.dataset.val===ratings[key]));
 }
-function updateOverall() {
-  const vals = ratingKeys.map(k => ratings[k]).filter(v => v > 0);
-  document.getElementById('overall-display').textContent = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : '—';
+function updateOverall(){
+  const vals=ratingKeys.map(k=>ratings[k]).filter(v=>v>0);
+  document.getElementById('overall-display').textContent=vals.length?(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):'—';
 }
-function calcPrice() {
-  const qty = parseFloat(document.getElementById('qty').value);
-  const price = parseFloat(document.getElementById('price').value);
-  document.getElementById('price-per-g').textContent = (qty > 0 && price > 0) ? '€'+(price/qty).toFixed(2)+'/g' : '—';
+function calcPrice(){
+  const qty=parseFloat(document.getElementById('qty').value);
+  const price=parseFloat(document.getElementById('price').value);
+  document.getElementById('price-per-g').textContent=(qty>0&&price>0)?'€'+(price/qty).toFixed(2)+'/g':'—';
 }
-function selectType(el, val) {
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active'); selectedType = val;
+function selectType(el,val){
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');selectedType=val;
 }
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+function overallScore(e){
+  const r=e.ratings||{};
+  const vals=ratingKeys.map(k=>r[k]).filter(v=>v>0);
+  return vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)):null;
+}
+function barChart(items,maxVal,colorClass){
+  if(!items.length)return'';
+  return`<div class="bar-chart">${items.map(([label,val])=>{
+    const pct=maxVal>0?(val/maxVal*100).toFixed(1):0;
+    const disp=typeof val==='number'&&val%1!==0?val.toFixed(1):val;
+    return`<div class="bar-row"><span class="bar-label" title="${label}">${label}</span><div class="bar-track"><div class="bar-fill ${colorClass||''}" style="width:${pct}%"></div></div><span class="bar-val">${disp}</span></div>`;
+  }).join('')}</div>`;
 }
 
-// ── Nav ───────────────────────────────────────────────────────
-function switchTab(tab) {
-  currentTab = tab;
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  // update nav buttons
-  document.getElementById('nav-list').classList.toggle('active', tab === 'list');
-  document.getElementById('nav-stats').classList.toggle('active', tab === 'stats');
-  // add button appearance
-  const addBtn = document.getElementById('nav-add-btn');
-  if (tab === 'add') {
-    addBtn.classList.add('editing');
-  } else {
-    addBtn.classList.remove('editing');
+// ─────────────────────────────────────────────
+// Nav
+// ─────────────────────────────────────────────
+const navIds=['list','compare','stats','profile','terps'];
+function switchTab(tab){
+  currentTab=tab;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+tab).classList.add('active');
+  navIds.forEach(id=>{
+    const btn=document.getElementById('nav-'+id);
+    if(btn)btn.classList.toggle('active',id===tab);
+  });
+  const addBtn=document.getElementById('nav-add-btn');
+  addBtn.classList.toggle('editing',tab==='add');
+  if(tab==='list')loadEntries();
+  if(tab==='stats'){loadEntries();renderStats();}
+  if(tab==='compare'){loadEntries();renderCompare();}
+  if(tab==='profile'){loadEntries();renderProfile();}
+}
+function onAddBtn(){
+  if(currentTab==='add'&&!editId){switchTab('list');}
+  else if(currentTab==='add'&&editId){cancelEdit();}
+  else{cancelEdit();switchTab('add');}
+}
+
+// ─────────────────────────────────────────────
+// Filter
+// ─────────────────────────────────────────────
+function setFilter(el,filter){
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');currentFilter=filter;
+  renderCards(filteredEntries(),document.getElementById('entries-list'));
+}
+function filteredEntries(){
+  if(currentFilter==='fav')return allEntries.filter(e=>e.favorite);
+  if(currentFilter==='all')return allEntries;
+  return allEntries.filter(e=>e.type===currentFilter);
+}
+
+// ─────────────────────────────────────────────
+// CRUD
+// ─────────────────────────────────────────────
+function loadEntries(){
+  allEntries=lsGetAll().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  if(currentTab==='list')renderCards(filteredEntries(),document.getElementById('entries-list'));
+}
+function toggleFavorite(id){
+  const entries=lsGetAll();
+  const idx=entries.findIndex(e=>e.id===id);
+  if(idx!==-1){entries[idx].favorite=!entries[idx].favorite;lsSave(entries);}
+  loadEntries();
+}
+
+function renderCards(entries,el){
+  if(!entries.length){
+    el.innerHTML='<div class="empty">Nenhuma strain aqui.<span>Toca o + pra adicionar.</span></div>';return;
   }
-  if (tab === 'list') loadEntries();
-  if (tab === 'stats') { loadEntries(); renderStats(); }
-}
-
-function onAddBtn() {
-  if (currentTab === 'add' && !editId) {
-    // already on add form without editing: go back to list
-    switchTab('list');
-  } else if (currentTab === 'add' && editId) {
-    cancelEdit();
-  } else {
-    cancelEdit();
-    switchTab('add');
-  }
-}
-
-// ── CRUD ──────────────────────────────────────────────────────
-function loadEntries() {
-  allEntries = lsGetAll().sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-  updateTabBadge(allEntries.length);
-  if (currentTab === 'list') renderCards(allEntries, document.getElementById('entries-list'));
-}
-
-function renderCards(entries, el) {
-  if (!entries.length) {
-    el.innerHTML = '<div class="empty">Nenhuma strain ainda.<span>Toca o + pra adicionar.</span></div>';
-    return;
-  }
-  el.innerHTML = entries.map(e => {
-    const ts = typeStyle[e.type] || {};
-    const meta = [e.shop, e.qty?e.qty+'g':'', e.price?'€'+parseFloat(e.price).toFixed(2):'', e.price_per_g?'€'+parseFloat(e.price_per_g).toFixed(2)+'/g':''].filter(Boolean).join(' · ');
-    const flavTags = (e.flavors||[]).map(f=>`<span class="card-tag" style="background:var(--flavor-bg);color:var(--flavor-text);border-color:var(--flavor-border)">${f}</span>`).join('');
-    const posTags  = (e.pos||[]).map(f=>`<span class="card-tag" style="background:var(--pos-bg);color:var(--pos-text);border-color:var(--pos-border)">${f}</span>`).join('');
-    const negTags  = (e.neg||[]).map(f=>`<span class="card-tag" style="background:var(--neg-bg);color:var(--neg-text);border-color:var(--neg-border)">${f}</span>`).join('');
-    const r = e.ratings || {};
-    const rVals = ratingKeys.map(k=>r[k]).filter(v=>v>0);
-    const overall = rVals.length ? (rVals.reduce((a,b)=>a+b,0)/rVals.length).toFixed(1) : null;
-    const ratingsHtml = ratingKeys.filter(k=>r[k]>0).map(k=>`<span class="card-rating-item">${ratingLabels[k]} <span>${r[k]}</span></span>`).join('');
-    const safeName = (e.strain||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    const dateStr = e.created_at ? new Date(e.created_at).toLocaleDateString('pt-BR') : '';
-    return `<div class="entry-card">
+  el.innerHTML=entries.map(e=>{
+    const ts=typeStyle[e.type]||{};
+    const meta=[e.shop,e.qty?e.qty+'g':'',e.price?'€'+parseFloat(e.price).toFixed(2):'',e.price_per_g?'€'+parseFloat(e.price_per_g).toFixed(2)+'/g':''].filter(Boolean).join(' · ');
+    const flavTags=(e.flavors||[]).map(f=>`<span class="card-tag" style="background:var(--flavor-bg);color:var(--flavor-text);border-color:var(--flavor-border)">${f}</span>`).join('');
+    const posTags=(e.pos||[]).map(f=>`<span class="card-tag" style="background:var(--pos-bg);color:var(--pos-text);border-color:var(--pos-border)">${f}</span>`).join('');
+    const negTags=(e.neg||[]).map(f=>`<span class="card-tag" style="background:var(--neg-bg);color:var(--neg-text);border-color:var(--neg-border)">${f}</span>`).join('');
+    const r=e.ratings||{};
+    const overall=overallScore(e);
+    const ratingsHtml=ratingKeys.filter(k=>r[k]>0).map(k=>`<span class="card-rating-item">${ratingLabels[k]} <span>${r[k]}</span></span>`).join('');
+    const safeName=(e.strain||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    const dateStr=e.created_at?new Date(e.created_at).toLocaleDateString('pt-BR'):'';
+    const favActive=e.favorite?'active':'';
+    const cardClass=e.favorite?'entry-card is-favorite':'entry-card';
+    return`<div class="${cardClass}">
       <div class="card-top">
         <div class="card-left">
           <div class="card-title-row">
@@ -473,277 +595,375 @@ function renderCards(entries, el) {
         </div>
         <div class="card-right">
           <span class="card-date">${dateStr}</span>
+          <button class="fav-btn ${favActive}" onclick="toggleFavorite(${e.id})" title="Favoritar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="${e.favorite?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
           <button class="act-btn edit" onclick="openEdit(${e.id})" title="Editar">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           </button>
           <button class="act-btn del" onclick="openModal(${e.id},'${safeName}')" title="Apagar">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
           </button>
         </div>
       </div>
       ${flavTags||posTags||negTags?`<div class="card-tags">${flavTags}${posTags}${negTags}</div>`:''}
-      ${ratingsHtml||overall?`<div class="card-ratings">${ratingsHtml}${overall?`<span class="card-overall">${overall}</span>`:''}</div>`:''}
+      ${ratingsHtml||overall!==null?`<div class="card-ratings">${ratingsHtml}${overall!==null?`<span class="card-overall">${overall}</span>`:''}</div>`:''}
       ${e.notes?`<div class="card-notes">${e.notes}</div>`:''}
     </div>`;
   }).join('');
 }
 
-function updateTabBadge(count) {
-  // show count in nav leaf button label
-  document.getElementById('nav-list').innerHTML = `
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
-      <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-    </svg>
-    Strains ${count > 0 ? `<span class="count-badge">${count}</span>` : ''}
-  `;
-}
+// ─────────────────────────────────────────────
+// Modals
+// ─────────────────────────────────────────────
+function openModal(id,name){deleteId=id;document.getElementById('modal-strain-name').textContent=`"${name}" será apagada permanentemente.`;document.getElementById('modal').classList.add('show');}
+function closeModal(){document.getElementById('modal').classList.remove('show');deleteId=null;}
+function confirmDelete(){if(!deleteId)return;lsSave(lsGetAll().filter(e=>e.id!==deleteId));closeModal();showToast('Entrada apagada.');loadEntries();}
 
-// ── Modals ────────────────────────────────────────────────────
-function openModal(id, name) {
-  deleteId = id;
-  document.getElementById('modal-strain-name').textContent = `"${name}" será apagada permanentemente.`;
-  document.getElementById('modal').classList.add('show');
-}
-function closeModal() { document.getElementById('modal').classList.remove('show'); deleteId = null; }
-function confirmDelete() {
-  if (!deleteId) return;
-  lsSave(lsGetAll().filter(e => e.id !== deleteId));
-  closeModal(); showToast('Entrada apagada.'); loadEntries();
-}
-
-// ── Edit ──────────────────────────────────────────────────────
-function openEdit(id) {
-  const e = allEntries.find(x => x.id === id);
-  if (!e) return;
-  editId = id; resetForm();
-  document.getElementById('strain').value = e.strain || '';
-  document.getElementById('shop').value = e.shop || '';
-  document.getElementById('qty').value = e.qty != null ? e.qty : '';
-  document.getElementById('price').value = e.price != null ? e.price : '';
-  const d = e.entry_date || (e.created_at ? e.created_at.slice(0,10) : new Date().toISOString().slice(0,10));
-  document.getElementById('entry-date').value = d;
+// ─────────────────────────────────────────────
+// Edit
+// ─────────────────────────────────────────────
+function openEdit(id){
+  const e=allEntries.find(x=>x.id===id);if(!e)return;
+  editId=id;resetForm();
+  document.getElementById('strain').value=e.strain||'';
+  document.getElementById('shop').value=e.shop||'';
+  document.getElementById('qty').value=e.qty!=null?e.qty:'';
+  document.getElementById('price').value=e.price!=null?e.price:'';
+  const d=e.entry_date||(e.created_at?e.created_at.slice(0,10):new Date().toISOString().slice(0,10));
+  document.getElementById('entry-date').value=d;
   calcPrice();
-  if (e.type) {
-    const btn = [...document.querySelectorAll('.type-btn')].find(b => b.textContent.trim() === e.type);
-    if (btn) { btn.classList.add('active'); selectedType = e.type; }
-  }
-  (e.flavors||[]).forEach(f => { selectedFlavors.add(f); [...document.querySelectorAll('#flavors .tag')].find(t=>t.textContent===f)?.classList.add('selected'); });
-  (e.pos||[]).forEach(f =>   { selectedPos.add(f);    [...document.querySelectorAll('#pos-effects .tag')].find(t=>t.textContent===f)?.classList.add('selected'); });
-  (e.neg||[]).forEach(f =>   { selectedNeg.add(f);    [...document.querySelectorAll('#neg-effects .tag')].find(t=>t.textContent===f)?.classList.add('selected'); });
-  const r = e.ratings || {};
-  ratingKeys.forEach(k => { ratings[k] = r[k] || 0; updateStars(k); });
-  updateOverall();
-  document.getElementById('notes').value = e.notes || '';
-  document.getElementById('edit-banner').style.display = 'flex';
-  document.getElementById('save-btn').textContent = 'Salvar edição';
+  if(e.type){const btn=[...document.querySelectorAll('.type-btn')].find(b=>b.textContent.trim()===e.type);if(btn){btn.classList.add('active');selectedType=e.type;}}
+  (e.flavors||[]).forEach(f=>{selectedFlavors.add(f);[...document.querySelectorAll('#flavors .tag')].find(t=>t.textContent===f)?.classList.add('selected');});
+  (e.pos||[]).forEach(f=>{selectedPos.add(f);[...document.querySelectorAll('#pos-effects .tag')].find(t=>t.textContent===f)?.classList.add('selected');});
+  (e.neg||[]).forEach(f=>{selectedNeg.add(f);[...document.querySelectorAll('#neg-effects .tag')].find(t=>t.textContent===f)?.classList.add('selected');});
+  const r=e.ratings||{};ratingKeys.forEach(k=>{ratings[k]=r[k]||0;updateStars(k);});updateOverall();
+  document.getElementById('notes').value=e.notes||'';
+  document.getElementById('edit-banner').style.display='flex';
+  document.getElementById('save-btn').textContent='Salvar edição';
   switchTab('add');
 }
-function cancelEdit() {
-  editId = null; resetForm();
-  document.getElementById('edit-banner').style.display = 'none';
-  document.getElementById('save-btn').textContent = 'Salvar Strain';
+function cancelEdit(){
+  editId=null;resetForm();
+  document.getElementById('edit-banner').style.display='none';
+  document.getElementById('save-btn').textContent='Salvar Strain';
   document.getElementById('nav-add-btn').classList.remove('editing');
 }
 
-// ── Save ──────────────────────────────────────────────────────
-function saveEntry() {
-  const strain = document.getElementById('strain').value.trim();
-  if (!strain) { showToast('Coloca o nome da strain!'); return; }
-  const btn = document.getElementById('save-btn');
-  btn.disabled = true;
-  const qty = parseFloat(document.getElementById('qty').value) || null;
-  const price = parseFloat(document.getElementById('price').value) || null;
-  const price_per_g = (qty && price) ? parseFloat((price/qty).toFixed(2)) : null;
-  const entryDate = document.getElementById('entry-date').value;
-  const body = {
-    strain, shop: document.getElementById('shop').value.trim()||null,
-    qty, price, price_per_g, type: selectedType||null,
-    entry_date: entryDate||null,
-    flavors:[...selectedFlavors], pos:[...selectedPos], neg:[...selectedNeg],
-    ratings: Object.fromEntries(ratingKeys.map(k=>[k, ratings[k]||null])),
-    notes: document.getElementById('notes').value.trim()||null,
-  };
-  const entries = lsGetAll();
-  if (editId) {
-    const idx = entries.findIndex(e => e.id === editId);
-    if (idx !== -1) {
-      entries[idx] = { ...entries[idx], ...body };
-      if (entryDate) entries[idx].created_at = entryDate + 'T12:00:00.000Z';
-    }
-    lsSave(entries); showToast('Strain atualizada!');
-    editId = null;
-    document.getElementById('edit-banner').style.display = 'none';
-  } else {
-    body.id = lsNextId(entries);
-    body.created_at = entryDate ? entryDate+'T12:00:00.000Z' : new Date().toISOString();
-    entries.push(body); lsSave(entries); showToast('Strain salva!');
+// ─────────────────────────────────────────────
+// Save
+// ─────────────────────────────────────────────
+function saveEntry(){
+  const strain=document.getElementById('strain').value.trim();
+  if(!strain){showToast('Coloca o nome da strain!');return;}
+  const btn=document.getElementById('save-btn');btn.disabled=true;
+  const qty=parseFloat(document.getElementById('qty').value)||null;
+  const price=parseFloat(document.getElementById('price').value)||null;
+  const price_per_g=(qty&&price)?parseFloat((price/qty).toFixed(2)):null;
+  const entryDate=document.getElementById('entry-date').value;
+  const body={strain,shop:document.getElementById('shop').value.trim()||null,qty,price,price_per_g,type:selectedType||null,entry_date:entryDate||null,
+    flavors:[...selectedFlavors],pos:[...selectedPos],neg:[...selectedNeg],
+    ratings:Object.fromEntries(ratingKeys.map(k=>[k,ratings[k]||null])),
+    notes:document.getElementById('notes').value.trim()||null};
+  const entries=lsGetAll();
+  if(editId){
+    const idx=entries.findIndex(e=>e.id===editId);
+    if(idx!==-1){entries[idx]={...entries[idx],...body};if(entryDate)entries[idx].created_at=entryDate+'T12:00:00.000Z';}
+    lsSave(entries);showToast('Strain atualizada!');editId=null;document.getElementById('edit-banner').style.display='none';
+  }else{
+    body.id=lsNextId(entries);body.created_at=entryDate?entryDate+'T12:00:00.000Z':new Date().toISOString();
+    entries.push(body);lsSave(entries);showToast('Strain salva!');
   }
-  btn.disabled = false;
-  document.getElementById('save-btn').textContent = 'Salvar Strain';
-  resetForm(); switchTab('list');
+  btn.disabled=false;document.getElementById('save-btn').textContent='Salvar Strain';resetForm();switchTab('list');
+}
+function resetForm(){
+  ['strain','shop','qty','price','notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('entry-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('price-per-g').textContent='—';
+  document.getElementById('overall-display').textContent='—';
+  selectedType='';selectedFlavors.clear();selectedPos.clear();selectedNeg.clear();
+  ratingKeys.forEach(k=>{ratings[k]=0;updateStars(k);});
+  document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('selected'));
 }
 
-function resetForm() {
-  ['strain','shop','qty','price','notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
-  document.getElementById('price-per-g').textContent = '—';
-  document.getElementById('overall-display').textContent = '—';
-  selectedType = ''; selectedFlavors.clear(); selectedPos.clear(); selectedNeg.clear();
-  ratingKeys.forEach(k => { ratings[k] = 0; updateStars(k); });
-  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tag').forEach(t => t.classList.remove('selected'));
-}
-
-// ── Stats ─────────────────────────────────────────────────────
-function setStatsPeriod(el, period) {
-  document.querySelectorAll('.stats-pill').forEach(p => p.classList.remove('active'));
-  el.classList.add('active'); statsPeriod = period; renderStats();
-}
-
-function barChart(items, maxVal, colorClass) {
-  if (!items.length) return '';
-  return `<div class="bar-chart">${items.map(([label, val]) => {
-    const pct = maxVal > 0 ? (val / maxVal * 100).toFixed(1) : 0;
-    return `<div class="bar-row">
-      <span class="bar-label" title="${label}">${label}</span>
-      <div class="bar-track"><div class="bar-fill ${colorClass||''}" style="width:${pct}%"></div></div>
-      <span class="bar-val">${typeof val === 'number' && val % 1 !== 0 ? val.toFixed(1) : val}</span>
-    </div>`;
-  }).join('')}</div>`;
-}
-
-function renderStats() {
-  const el = document.getElementById('stats-content');
-  if (!allEntries.length) { el.innerHTML = '<div class="empty">Sem dados ainda.</div>'; return; }
-  const now = new Date();
-  const filtered = allEntries.filter(e => {
-    if (statsPeriod === 'all') return true;
-    const d = new Date(e.created_at);
-    if (statsPeriod === 'week')  { const w = new Date(now); w.setDate(now.getDate()-7); return d >= w; }
-    if (statsPeriod === 'month') return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+// ─────────────────────────────────────────────
+// Stats
+// ─────────────────────────────────────────────
+function setStatsPeriod(el,period){document.querySelectorAll('.stats-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');statsPeriod=period;renderStats();}
+function renderStats(){
+  const el=document.getElementById('stats-content');
+  if(!allEntries.length){el.innerHTML='<div class="empty">Sem dados ainda.</div>';return;}
+  const now=new Date();
+  const filtered=allEntries.filter(e=>{
+    if(statsPeriod==='all')return true;
+    const d=new Date(e.created_at);
+    if(statsPeriod==='week'){const w=new Date(now);w.setDate(now.getDate()-7);return d>=w;}
+    if(statsPeriod==='month')return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
     return d.getFullYear()===now.getFullYear();
   });
-
-  if (!filtered.length) { el.innerHTML = '<div class="empty">Sem dados no período.</div>'; return; }
-
-  const totalGasto  = filtered.reduce((a,e)=>a+(parseFloat(e.price)||0),0);
-  const totalGramas = filtered.reduce((a,e)=>a+(parseFloat(e.qty)||0),0);
-  const avgPpg = totalGramas > 0 ? (totalGasto/totalGramas) : null;
-
-  // top strains by overall
-  const withRatings = filtered.filter(e=>e.ratings&&ratingKeys.some(k=>e.ratings[k]>0));
-  const topStrains = withRatings.map(e=>{
-    const vals = ratingKeys.map(k=>e.ratings[k]).filter(v=>v>0);
-    return [e.strain, parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1))];
-  }).sort((a,b)=>b[1]-a[1]).slice(0,6);
-
-  // shops
-  const shopCount = {};
-  filtered.forEach(e=>{ if(e.shop) shopCount[e.shop]=(shopCount[e.shop]||0)+1; });
-  const topShops = Object.entries(shopCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
-  // avg ratings across all
-  const avgRatings = ratingKeys.map(k => {
-    const vals = filtered.map(e=>e.ratings&&e.ratings[k]).filter(v=>v>0);
-    return [ratingLabels[k], vals.length ? parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)) : 0];
-  }).filter(([,v])=>v>0);
-
-  // type distribution
-  const typeCounts = {};
-  filtered.forEach(e=>{ if(e.type) typeCounts[e.type]=(typeCounts[e.type]||0)+1; });
-  const typeItems = Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
-
-  el.innerHTML = `
+  if(!filtered.length){el.innerHTML='<div class="empty">Sem dados no período.</div>';return;}
+  const totalGasto=filtered.reduce((a,e)=>a+(parseFloat(e.price)||0),0);
+  const totalGramas=filtered.reduce((a,e)=>a+(parseFloat(e.qty)||0),0);
+  const avgPpg=totalGramas>0?(totalGasto/totalGramas):null;
+  const withR=filtered.filter(e=>e.ratings&&ratingKeys.some(k=>e.ratings[k]>0));
+  const topStrains=withR.map(e=>{const vals=ratingKeys.map(k=>e.ratings[k]).filter(v=>v>0);return[e.strain,parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1))];}).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const shopCount={};filtered.forEach(e=>{if(e.shop)shopCount[e.shop]=(shopCount[e.shop]||0)+1;});
+  const topShops=Object.entries(shopCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const avgRatings=ratingKeys.map(k=>{const vals=filtered.map(e=>e.ratings&&e.ratings[k]).filter(v=>v>0);return[ratingLabels[k],vals.length?parseFloat((vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1)):0];}).filter(([,v])=>v>0);
+  const typeCounts={};filtered.forEach(e=>{if(e.type)typeCounts[e.type]=(typeCounts[e.type]||0)+1;});
+  const typeItems=Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]);
+  el.innerHTML=`
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-card-label">Gasto total</div><div class="stat-card-value">€${totalGasto.toFixed(2)}</div></div>
       <div class="stat-card"><div class="stat-card-label">Gramas</div><div class="stat-card-value">${totalGramas.toFixed(1)}<span>g</span></div></div>
-      <div class="stat-card"><div class="stat-card-label">Entradas</div><div class="stat-card-value">${filtered.length}</div></div>
+      <div class="stat-card"><div class="stat-card-label">Registros</div><div class="stat-card-value">${filtered.length}</div></div>
       <div class="stat-card"><div class="stat-card-label">Preço médio/g</div><div class="stat-card-value">${avgPpg?'€'+avgPpg.toFixed(2):'—'}</div></div>
     </div>
-
-    ${topStrains.length ? `
-    <div class="stat-card">
-      <div class="stat-card-label" style="margin-bottom:12px">Top strains — nota geral</div>
-      ${barChart(topStrains, 10, '')}
-    </div>` : ''}
-
-    ${avgRatings.length ? `
-    <div class="stat-card" style="margin-top:8px">
-      <div class="stat-card-label" style="margin-bottom:12px">Médias por critério</div>
-      ${barChart(avgRatings, 10, 'blue')}
-    </div>` : ''}
-
-    ${topShops.length ? `
-    <div class="stat-card" style="margin-top:8px">
-      <div class="stat-card-label" style="margin-bottom:12px">Coffeeshops mais visitados</div>
-      ${barChart(topShops, Math.max(...topShops.map(([,v])=>v)), 'amber')}
-    </div>` : ''}
-
-    ${typeItems.length ? `
-    <div class="stat-card" style="margin-top:8px">
-      <div class="stat-card-label" style="margin-bottom:12px">Distribuição por tipo</div>
-      ${barChart(typeItems, Math.max(...typeItems.map(([,v])=>v)), 'amber')}
-    </div>` : ''}
+    ${topStrains.length?`<div class="stat-card"><div class="stat-card-label" style="margin-bottom:12px">Top strains — nota geral</div>${barChart(topStrains,10,'')}</div>`:''}
+    ${avgRatings.length?`<div class="stat-card" style="margin-top:8px"><div class="stat-card-label" style="margin-bottom:12px">Médias por critério</div>${barChart(avgRatings,10,'blue')}</div>`:''}
+    ${topShops.length?`<div class="stat-card" style="margin-top:8px"><div class="stat-card-label" style="margin-bottom:12px">Coffeeshops frequentes</div>${barChart(topShops,Math.max(...topShops.map(([,v])=>v)),'amber')}</div>`:''}
+    ${typeItems.length?`<div class="stat-card" style="margin-top:8px"><div class="stat-card-label" style="margin-bottom:12px">Distribuição por tipo</div>${barChart(typeItems,Math.max(...typeItems.map(([,v])=>v)),'amber')}</div>`:''}
   `;
 }
 
-// ── Export / Import ───────────────────────────────────────────
-function exportData() {
-  const data = lsGetAll();
-  if (!data.length) { showToast('Nenhum dado pra exportar.'); return; }
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `strain-log-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
+// ─────────────────────────────────────────────
+// Compare
+// ─────────────────────────────────────────────
+function renderCompare(){
+  const picker=document.getElementById('compare-picker');
+  const withR=allEntries.filter(e=>e.ratings&&ratingKeys.some(k=>e.ratings[k]>0));
+  if(!allEntries.length){picker.innerHTML='<div class="empty">Sem strains registradas ainda.</div>';document.getElementById('compare-content').innerHTML='';return;}
+  // chips
+  picker.innerHTML=allEntries.map(e=>`
+    <div class="cmp-strain-chip ${compareSelected.has(e.id)?'selected':''}" onclick="toggleCompare(${e.id})">
+      <span class="chip-dot"></span>${e.strain}
+    </div>`).join('');
+  renderCompareResult();
+}
+function toggleCompare(id){
+  if(compareSelected.has(id)){compareSelected.delete(id);}else{compareSelected.add(id);}
+  renderCompare();
+}
+function renderCompareResult(){
+  const el=document.getElementById('compare-content');
+  const selected=allEntries.filter(e=>compareSelected.has(e.id));
+  if(selected.length<2){el.innerHTML='<div class="empty" style="padding:24px 0">Seleciona 2 ou mais strains acima.</div>';return;}
+  // find best per rating key
+  const scores=selected.map(e=>{
+    const r=e.ratings||{};
+    return{e,scores:Object.fromEntries(ratingKeys.map(k=>[k,r[k]||0])),overall:overallScore(e)||0};
+  });
+  const bestOverall=Math.max(...scores.map(s=>s.overall));
+  // radar SVG for each
+  const radarSvg=makeRadar(scores);
+  el.innerHTML=`
+    <div class="stat-card" style="margin-bottom:10px">
+      <div class="stat-card-label" style="margin-bottom:10px">Radar — critérios</div>
+      <div class="radar-wrap">${radarSvg}</div>
+    </div>
+    <div class="cmp-cards">
+      ${scores.map((s,idx)=>{
+        const ts=typeStyle[s.e.type]||{};
+        const colors=['#a3e635','#93c5fd','#fcd34d','#c4b5fd','#86efac','#fca5a5'];
+        const col=colors[idx%colors.length];
+        return`<div class="cmp-card" style="border-color:${col}22">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></span>
+            <span class="cmp-card-name">${s.e.strain}</span>
+          </div>
+          <div class="cmp-card-sub">${[s.e.type,s.e.shop].filter(Boolean).join(' · ')||'—'}</div>
+          ${ratingKeys.map(k=>{
+            const best=Math.max(...scores.map(x=>x.scores[k]));
+            const cls=s.scores[k]>0&&s.scores[k]===best&&scores.length>1?'better':s.scores[k]>0?'':'worse';
+            return`<div class="cmp-row"><span class="cmp-key">${ratingLabels[k]}</span><span class="cmp-val ${cls}">${s.scores[k]||'—'}</span></div>`;
+          }).join('')}
+          <div class="cmp-row"><span class="cmp-key">Overall</span><span class="cmp-val ${s.overall===bestOverall&&scores.length>1?'better':''}">${s.overall||'—'}</span></div>
+          ${s.e.price_per_g?`<div class="cmp-row"><span class="cmp-key">€/g</span><span class="cmp-val">€${s.e.price_per_g}</span></div>`:''}
+          ${(s.e.flavors||[]).length?`<div class="cmp-tags-wrap">${s.e.flavors.map(f=>`<span class="card-tag" style="background:var(--flavor-bg);color:var(--flavor-text);border-color:var(--flavor-border)">${f}</span>`).join('')}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+function makeRadar(scores){
+  const keys=ratingKeys;const n=keys.length;
+  const cx=140,cy=130,r=90;
+  const colors=['#a3e635','#93c5fd','#fcd34d','#c4b5fd','#86efac'];
+  const angle=(i)=>((i/n)*2*Math.PI)-Math.PI/2;
+  const pt=(val,i)=>{const a=angle(i);const rv=(val/10)*r;return[cx+rv*Math.cos(a),cy+rv*Math.sin(a)];};
+  // grid rings
+  let svg=`<svg viewBox="0 0 280 260" width="280" height="260" xmlns="http://www.w3.org/2000/svg">`;
+  [2,4,6,8,10].forEach(ring=>{
+    const pts=keys.map((_,i)=>pt(ring,i));
+    svg+=`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#27272a" stroke-width="1"/>`;
+  });
+  // axes + labels
+  keys.forEach((k,i)=>{
+    const[x,y]=pt(10,i);
+    svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#27272a" stroke-width="1"/>`;
+    const[lx,ly]=pt(11.5,i);
+    const anchor=lx<cx-5?'end':lx>cx+5?'start':'middle';
+    svg+=`<text x="${lx}" y="${ly+4}" text-anchor="${anchor}" font-size="9" fill="#a1a1aa" font-family="Geist Mono,monospace">${ratingLabels[k].slice(0,4)}</text>`;
+  });
+  // polygons per strain
+  scores.forEach((s,si)=>{
+    const pts=keys.map((k,i)=>pt(s.scores[k]||0,i));
+    const col=colors[si%colors.length];
+    svg+=`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="${col}" fill-opacity="0.12" stroke="${col}" stroke-width="1.5"/>`;
+    pts.forEach(([px,py])=>svg+=`<circle cx="${px}" cy="${py}" r="3" fill="${col}"/>`);
+  });
+  // legend
+  scores.forEach((s,si)=>{
+    const col=colors[si%colors.length];const ly=cy+r+30+(si*14);
+    svg+=`<circle cx="20" cy="${ly}" r="4" fill="${col}"/><text x="28" y="${ly+4}" font-size="10" fill="#a1a1aa" font-family="Geist,sans-serif">${s.e.strain.slice(0,22)}</text>`;
+  });
+  svg+=`</svg>`;return svg;
+}
+
+// ─────────────────────────────────────────────
+// Sensory Profile
+// ─────────────────────────────────────────────
+function renderProfile(){
+  const el=document.getElementById('profile-content');
+  if(allEntries.length<2){el.innerHTML='<div class="empty">Adiciona pelo menos 2 strains para ver seu perfil sensorial.</div>';return;}
+  // flavor freq
+  const flavCount={};allEntries.forEach(e=>(e.flavors||[]).forEach(f=>{flavCount[f]=(flavCount[f]||0)+1;}));
+  const topFlavors=Object.entries(flavCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  // pos effects freq
+  const posCount={};allEntries.forEach(e=>(e.pos||[]).forEach(f=>{posCount[f]=(posCount[f]||0)+1;}));
+  const topPos=Object.entries(posCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  // type pref
+  const typeCounts={};allEntries.forEach(e=>{if(e.type)typeCounts[e.type]=(typeCounts[e.type]||0)+1;});
+  const topType=Object.entries(typeCounts).sort((a,b)=>b[1]-a[1])[0];
+  // avg ratings
+  const avgR=ratingKeys.map(k=>{const vals=allEntries.map(e=>e.ratings&&e.ratings[k]).filter(v=>v>0);return{k,avg:vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0};}).filter(r=>r.avg>0).sort((a,b)=>b.avg-a.avg);
+  const bestCrit=avgR[0];
+  // top strain
+  const ranked=allEntries.filter(e=>overallScore(e)!==null).sort((a,b)=>overallScore(b)-overallScore(a));
+  const topStrain=ranked[0];
+  // headline
+  const flavWords=topFlavors.slice(0,2).map(([f])=>f.toLowerCase()).join(' e ');
+  const posWords=topPos.slice(0,2).map(([f])=>f.toLowerCase()).join(' e ');
+  const headline=topFlavors.length?`Você prefere sabores ${flavWords}${topType?`, geralmente ${topType[0].toLowerCase()}`:', '}.`:'Seu perfil está se formando.';
+  const insight=posWords?`Os efeitos que você mais curte são <strong>${posWords}</strong>${bestCrit?` — e você é especialmente crítico com <strong>${ratingLabels[bestCrit.k].toLowerCase()}</strong>`:''}.`:'';
+  // radar
+  const radarData=avgR.map(({k,avg})=>({k,v:avg}));
+  const radarSvg=makeProfileRadar(radarData);
+  // bubble colors
+  const flavorColors=['#c4b5fd','#a5b4fc','#93c5fd','#86efac','#fcd34d','#fdba74'];
+  const posColors=['#86efac','#6ee7b7','#34d399','#a7f3d0','#d1fae5','#ecfdf5'];
+  el.innerHTML=`
+    <div class="profile-hero">
+      <div class="profile-title">Perfil Sensorial</div>
+      <div class="profile-headline">${headline}</div>
+      ${insight?`<div class="profile-sub" style="margin-top:6px">${insight}</div>`:''}
+    </div>
+
+    ${topStrain?`<div class="insight-box">
+      <div class="insight-icon">🏆</div>
+      <div class="insight-text">Sua melhor strain até agora é <strong>${topStrain.strain}</strong> com nota <strong>${overallScore(topStrain)}</strong>.</div>
+    </div>`:''}
+
+    ${topType?`<div class="insight-box">
+      <div class="insight-icon">${topType[0]==='Sativa'?'☀️':topType[0]==='Indica'?'🌙':'🌿'}</div>
+      <div class="insight-text">Você tende a preferir strains do tipo <strong>${topType[0]}</strong> — ${topType[1]} de ${allEntries.length} registros.</div>
+    </div>`:''}
+
+    <div class="profile-grid">
+      ${topFlavors.length?`<div class="profile-card full">
+        <div class="profile-card-label">Sabores favoritos</div>
+        <div class="bubble-cloud">
+          ${topFlavors.map(([f,c],i)=>`<span class="bubble" style="background:${flavorColors[i%flavorColors.length]}18;color:${flavorColors[i%flavorColors.length]};border-color:${flavorColors[i%flavorColors.length]}44;font-size:${12+Math.min(i===0?3:i===1?2:0,3)}px">${f} <span style="opacity:.6;font-size:10px">${c}×</span></span>`).join('')}
+        </div>
+      </div>`:''}
+
+      ${topPos.length?`<div class="profile-card full">
+        <div class="profile-card-label">Efeitos mais curtidos</div>
+        <div class="bubble-cloud">
+          ${topPos.map(([f,c],i)=>`<span class="bubble" style="background:${posColors[i%posColors.length]}18;color:${posColors[i%posColors.length]};border-color:${posColors[i%posColors.length]}44">${f} <span style="opacity:.6;font-size:10px">${c}×</span></span>`).join('')}
+        </div>
+      </div>`:''}
+
+      ${radarData.length?`<div class="profile-card full">
+        <div class="profile-card-label">Médias por critério</div>
+        <div style="display:flex;justify-content:center">${radarSvg}</div>
+      </div>`:''}
+
+      ${avgR.length?`<div class="profile-card full">
+        <div class="profile-card-label" style="margin-bottom:12px">Notas médias</div>
+        ${barChart(avgR.map(({k,avg})=>[ratingLabels[k],avg]),10,'purple')}
+      </div>`:''}
+    </div>`;
+}
+function makeProfileRadar(data){
+  const n=data.length;if(!n)return'';
+  const cx=130,cy=120,r=80;
+  const angle=i=>((i/n)*2*Math.PI)-Math.PI/2;
+  const pt=(val,i)=>{const a=angle(i);const rv=(val/10)*r;return[cx+rv*Math.cos(a),cy+rv*Math.sin(a)];};
+  let svg=`<svg viewBox="0 0 260 240" width="240" height="220" xmlns="http://www.w3.org/2000/svg">`;
+  [2,4,6,8,10].forEach(ring=>{const pts=data.map((_,i)=>pt(ring,i));svg+=`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="none" stroke="#27272a" stroke-width="1"/>`;});
+  data.forEach(({k},i)=>{const[x,y]=pt(10,i);svg+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#27272a" stroke-width="1"/>`;const[lx,ly]=pt(12,i);const anchor=lx<cx-5?'end':lx>cx+5?'start':'middle';svg+=`<text x="${lx}" y="${ly+4}" text-anchor="${anchor}" font-size="9" fill="#a1a1aa" font-family="Geist Mono,monospace">${ratingLabels[k].slice(0,4)}</text>`;});
+  const pts=data.map(({v},i)=>pt(v,i));
+  svg+=`<polygon points="${pts.map(p=>p.join(',')).join(' ')}" fill="#a3e635" fill-opacity="0.15" stroke="#a3e635" stroke-width="2"/>`;
+  pts.forEach(([px,py])=>svg+=`<circle cx="${px}" cy="${py}" r="4" fill="#a3e635"/>`);
+  svg+=`</svg>`;return svg;
+}
+
+// ─────────────────────────────────────────────
+// Terpenes
+// ─────────────────────────────────────────────
+function buildTerpGrid(){
+  const grid=document.getElementById('terp-grid');
+  grid.innerHTML=TERPENES.map((t,i)=>`
+    <div class="terp-card" id="terp-${i}" onclick="toggleTerp(${i})">
+      <span class="terp-emoji">${t.emoji}</span>
+      <div class="terp-name">${t.name}</div>
+      <div class="terp-flavor">${t.flavor}</div>
+      <div class="terp-effect-tags">${t.effects.map(e=>`<span class="terp-tag">${e}</span>`).join('')}</div>
+      <div class="terp-detail">
+        ${t.desc}
+        <div class="terp-found-in" style="margin-top:8px">
+          <span style="font-size:10px;color:var(--text-dim);margin-right:4px">Encontrado em:</span>
+          ${t.foundIn.map(s=>`<span class="terp-found-tag">${s}</span>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleTerp(i){
+  const card=document.getElementById('terp-'+i);
+  card.classList.toggle('expanded');
+}
+
+// ─────────────────────────────────────────────
+// Export / Import
+// ─────────────────────────────────────────────
+function exportData(){
+  const data=lsGetAll();if(!data.length){showToast('Nenhum dado pra exportar.');return;}
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download=`strain-log-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
   showToast('Backup baixado!');
 }
-
-function openImport() { document.getElementById('import-modal').classList.add('show'); }
-function closeImport() { document.getElementById('import-modal').classList.remove('show'); }
-
-function onDragOver(e) { e.preventDefault(); document.getElementById('import-zone').classList.add('drag'); }
-function onDrop(e) {
-  e.preventDefault();
-  document.getElementById('import-zone').classList.remove('drag');
-  const file = e.dataTransfer.files[0];
-  if (file) processImportFile(file);
-}
-function handleImportFile(input) {
-  if (input.files[0]) processImportFile(input.files[0]);
-  input.value = '';
-}
-function processImportFile(file) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const imported = JSON.parse(ev.target.result);
-      if (!Array.isArray(imported)) throw new Error('formato inválido');
-      const existing = lsGetAll();
-      const existingIds = new Set(existing.map(e => e.id));
-      // merge: add entries that don't exist yet (by id), reassign id if conflict
-      let nextId = lsNextId(existing);
-      const toAdd = imported.map(e => {
-        if (existingIds.has(e.id)) {
-          return { ...e, id: nextId++ };
-        }
-        return e;
-      });
-      lsSave([...existing, ...toAdd]);
-      closeImport();
-      loadEntries();
-      showToast(`${toAdd.length} entradas importadas!`);
-    } catch(err) {
-      showToast('Erro ao importar: arquivo inválido.');
-    }
-  };
-  reader.readAsText(file);
+function openImport(){document.getElementById('import-modal').classList.add('show');}
+function closeImport(){document.getElementById('import-modal').classList.remove('show');}
+function onDragOver(e){e.preventDefault();document.getElementById('import-zone').classList.add('drag');}
+function onDrop(e){e.preventDefault();document.getElementById('import-zone').classList.remove('drag');const f=e.dataTransfer.files[0];if(f)processImportFile(f);}
+function handleImportFile(input){if(input.files[0])processImportFile(input.files[0]);input.value='';}
+function processImportFile(file){
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const imported=JSON.parse(ev.target.result);if(!Array.isArray(imported))throw new Error();
+      const existing=lsGetAll();const existingIds=new Set(existing.map(e=>e.id));let nextId=lsNextId(existing);
+      const toAdd=imported.map(e=>existingIds.has(e.id)?{...e,id:nextId++}:e);
+      lsSave([...existing,...toAdd]);closeImport();loadEntries();showToast(`${toAdd.length} entradas importadas!`);
+    }catch{showToast('Erro ao importar: arquivo inválido.');}
+  };reader.readAsText(file);
 }
 
-// ── Boot ──────────────────────────────────────────────────────
+// ─────────────────────────────────────────────
+// Boot
+// ─────────────────────────────────────────────
 loadEntries();
 </script>
 </body>
